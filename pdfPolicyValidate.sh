@@ -12,6 +12,7 @@
 # - JAR of Apache Preflight (2.0) - get it from:
 #        https://builds.apache.org/job/PDFBox-trunk/lastBuild/org.apache.pdfbox$preflight/
 # - xsltproc (part of libxslt library)
+# -xmllint (part of libxml library)
 # - If you're using Windows you can run this shell script within a Cygwin terminal: http://www.cygwin.com/
 
 # **************
@@ -64,13 +65,15 @@ counter=0
 # Select all files with extension .pdf
 for i in $(find $pdfRoot -type f -name *.pdf)
 do
+    pdfName="$i"
     counter=$((counter+1))
     
+    # Generate names for output files, based on counter
     outputPreflight="$counter"_preflight.xml
     fileOut="$counter".xml
     
     # Run Preflight
-    java -jar $preflightJar xml "$i" >$outputPreflight
+    java -jar $preflightJar xml $pdfName >$outputPreflight 2>stderr.txt
     
     # Validate output using Schematron reference application
     if [ $counter == "1" ]; then
@@ -81,7 +84,13 @@ do
     fi
     
     xsltproc --path $xslPath xxx.xsl $outputPreflight > $fileOut
-        
+    
+    # TO DO: 
+    # 1. Index file that links file names/paths to output files
+    # 2. Summary output files: pass/fail, failed tests (extract using xmllint)
+    echo $pdfName,$fileOut
+    
+    
 done
 
 # **************
@@ -90,3 +99,4 @@ done
 rm xxx1.sch
 rm xxx2.sch
 rm xxx.xsl
+rm stderr.txt
