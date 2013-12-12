@@ -2,7 +2,7 @@
 
 # Simple demo script that demonstrates policy-based validation of PDF documents using Apache Preflight
 # and Schematron. Each file with a .pdf extension in the directory tree is analysed with Apache Preflight, 
-# and the Preflight output is subsequently validated against a  user-specified schema (which represents a policy)
+# and the Preflight output is subsequently validated against a  user-specified schema (which represents a policy).
 #
 # Author: Johan van der Knijff, KB/National Library of the Netherlands
 #
