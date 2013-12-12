@@ -2,7 +2,7 @@
 
 ## About
 
-Simple shell script that demonstrates policy-based validation of PDF documents using [Apache Preflight](http://pdfbox.apache.org/) and Schematron. Each file with a .pdf extension in a user-defined directory tree is analysed with Apache Preflight, and the Preflight output is subsequently validated against a  user-specified schema (which represents a policy). Schematron validation is done using the[ISO Schematron "unofficial" reference implementation](http://code.google.com/p/schematron/) (included here in directory *iso-schematron-xslt1*) and the [xsltproc](http://xmlsoft.org/XSLT/xsltproc2.html) tool.
+Simple shell script that demonstrates policy-based validation of PDF documents using [Apache Preflight](http://pdfbox.apache.org/) and Schematron. Each file with a .pdf extension in a user-defined directory tree is analysed with Apache Preflight, and the Preflight output is subsequently validated against a  user-specified schema (which represents a policy). Schematron validation is done using the [ISO Schematron "unofficial" reference implementation](http://code.google.com/p/schematron/) (included here in directory *iso-schematron-xslt1*) and the [xsltproc](http://xmlsoft.org/XSLT/xsltproc2.html) tool.
 
 Development partially supported by the [SCAPE](http://www.scape-project.eu/) Project. The SCAPE project is co-funded by the European Union under FP7 ICT-2009.4.1 (Grant Agreement number 270137).
 

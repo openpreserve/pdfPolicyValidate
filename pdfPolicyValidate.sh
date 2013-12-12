@@ -14,6 +14,10 @@
 # - xsltproc (part of libxslt library)
 # - If you're using Windows you can run this shell script within a Cygwin terminal: http://www.cygwin.com/
 
+# **************
+# CONFIGURATION
+# **************
+
 # Location of  Preflight jar -- update according to your local installation!
 preflightJar=C:/preflight/preflight-app.jar
 
@@ -23,8 +27,11 @@ preflightJar=C:/preflight/preflight-app.jar
 instDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Location of Schematron XSL files
-#xslPath=$instDir/xsl
 xslPath=$instDir/iso-schematron-xslt1
+
+# **************
+# USER I/O
+# **************
 
 # Check command line args
 if [ "$#" -ne 2 ] ; then
@@ -48,7 +55,9 @@ pdfRoot="$1"
 # Schema
 schema="$2"
 
-# Main processing loop
+# **************
+# MAIN PROCESSING LOOP
+# **************
 
 counter=0
 
@@ -75,7 +84,9 @@ do
         
 done
 
-# Delete temporary files
+# **************
+# CLEAN-UP
+# **************
 rm xxx1.sch
 rm xxx2.sch
 rm xxx.xsl
