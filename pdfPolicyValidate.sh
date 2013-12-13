@@ -57,6 +57,44 @@ pdfRoot="$1"
 schema="$2"
 
 # **************
+# CREATE OUTPUT DIRECTORY FOR RAW PREFLIGHT / SCHEMATRON FILES
+# **************
+rawDir="outRaw"
+if ! [ -d $rawDir ] ; then
+    mkdir $rawDir
+fi
+
+# Normalise to absolute path
+rawDir=$(realpath ./$rawDir)
+
+# **************
+# OUTPUT FILES
+# **************
+
+# Links each PDF to corresponding Preflight / Schematron output file
+indexFile="index.txt"
+
+# File with results (pass/fail) of policy-based validation for each PDF 
+successFile="success.txt"
+
+# File that summarises failed tests for PDFs that didn't pass policy-based validation
+failedTestsFile="failed.txt" 
+
+# Remove these files if they exist already (writing to them will be done in append mode!)
+
+if [ -f $indexFile ] ; then
+    rm $indexFile
+fi
+
+if [ -f $successFile ] ; then
+    rm $successFile
+fi
+
+if [ -f $failedTestsFile ] ; then
+    rm $failedTestsFile
+fi
+
+# **************
 # MAIN PROCESSING LOOP
 # **************
 
@@ -69,8 +107,8 @@ do
     counter=$((counter+1))
     
     # Generate names for output files, based on counter
-    outputPreflight="$counter"_preflight.xml
-    fileOut="$counter".xml
+    outputPreflight=$rawDir/"$counter"_preflight.xml
+    outputSchematron=$rawDir/"$counter"_schematron.xml
     
     # Run Preflight
     java -jar $preflightJar xml $pdfName >$outputPreflight 2>stderr.txt
@@ -83,13 +121,23 @@ do
         xsltproc --path $xslPath $xslPath/iso_svrl_for_xslt1.xsl xxx2.sch > xxx.xsl
     fi
     
-    xsltproc --path $xslPath xxx.xsl $outputPreflight > $fileOut
+    xsltproc --path $xslPath xxx.xsl $outputPreflight > $outputSchematron
     
-    # TO DO: 
-    # 1. Index file that links file names/paths to output files
-    # 2. Summary output files: pass/fail, failed tests (extract using xmllint)
-    echo $pdfName,$fileOut
+    # Extract failed tests from Schematron output
+    failedTests=$(xmllint --xpath "//*[local-name()='schematron-output']/*[local-name()='failed-assert']/@test" $outputSchematron)
     
+    # PDF passed policy-based validation if failedTests is empty 
+    if [ ! "$failedTests" ]
+    then
+        success="True"
+    else
+        success="False"
+        echo $pdfName,$failedTests >> $failedTestsFile
+    fi
+    
+    # Write results to output files
+    echo $pdfName,$outputPreflight,$outputSchematron >> $indexFile
+    echo $pdfName,$success >> $successFile
     
 done
 
