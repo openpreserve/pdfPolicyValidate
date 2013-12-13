@@ -38,6 +38,11 @@ Johan van der Knijff, KB/National Library of the Netherlands
 ### Output 
 For now both *Preflight* output and the output of the *Schematron* validation are written to the directory from which the script is executed, using a naming scheme based on an incremental numerical counter. This will obviously change with upcoming versions.
 
+- **index.txt**: comma-delimited text file with for each analysed PDF the paths to the corresponding Preflight and Schematron output files
+- **success.txt**: comma-delimited text file with for each analysed PDF the outcome of the policy-based validation (pass/fail)
+- **failed.txt**:  text file with all tests that failed for PDFs that failed the policy-based validation
+
+In addition, the raw output files of *Preflight* and the Schematron validation are written to directory *outRaw*.
 
 #### Example
 

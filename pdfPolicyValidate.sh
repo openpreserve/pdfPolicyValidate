@@ -129,9 +129,9 @@ do
     # PDF passed policy-based validation if failedTests is empty 
     if [ ! "$failedTests" ]
     then
-        success="True"
+        success="Pass"
     else
-        success="False"
+        success="Fail"
         echo $pdfName,$failedTests >> $failedTestsFile
     fi
     
