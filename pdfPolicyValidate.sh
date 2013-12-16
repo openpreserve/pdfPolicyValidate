@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Simple demo script that demonstrates policy-based validation of PDF documents using Apache Preflight
-# and Schematron. Each file with a .pdf extension in the directory tree is analysed with Apache Preflight, 
+# Simple demo script that demonstrates minimal workflow for policy-based validation of PDF documents 
+# using Apache Preflight and Schematron.
+#
+# Each file with a .pdf extension in the directory tree is analysed with Apache Preflight, 
 # and the Preflight output is subsequently validated against a  user-specified schema (which represents a policy).
 #
 # Author: Johan van der Knijff, KB/National Library of the Netherlands
@@ -132,11 +134,14 @@ do
         success="Pass"
     else
         success="Fail"
+        # Failed tests to output file
         echo $pdfName,$failedTests >> $failedTestsFile
     fi
     
-    # Write results to output files
+    # Write index file (links Preflight and Schematron outputs to each PDF)
     echo $pdfName,$outputPreflight,$outputSchematron >> $indexFile
+    
+    # Write success file (lists validation outcome for each PDF)
     echo $pdfName,$success >> $successFile
     
 done
