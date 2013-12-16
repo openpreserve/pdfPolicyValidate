@@ -10,10 +10,15 @@ Development partially supported by the [SCAPE](http://www.scape-project.eu/) Pro
 Johan van der Knijff, KB/National Library of the Netherlands
 
 ## Dependencies
- - java (version?)
- - JAR of Apache Preflight (2.0), get it from: [https://builds.apache.org/job/PDFBox-trunk/lastBuild/org.apache.pdfbox$preflight/](https://builds.apache.org/job/PDFBox-trunk/lastBuild/org.apache.pdfbox$preflight/)
-- xsltproc tool (part of [libxslt](http://xmlsoft.org/XSLT/EXSLT/index.html) library)
- - If you're using Windows you can run this shell script within a [Cygwin](http://www.cygwin.com/) terminal.
+- *java* (version?)
+- JAR of *Apache Preflight* (2.0), get it from: [https://builds.apache.org/job/PDFBox-trunk/lastBuild/org.apache.pdfbox$preflight/](https://builds.apache.org/job/PDFBox-trunk/lastBuild/org.apache.pdfbox$preflight/)
+- *xsltproc* tool (part of [libxslt](http://xmlsoft.org/XSLT/EXSLT/index.html) library)
+- *xmllint* tool (part of [libxml](http://www.xmlsoft.org/)library)
+- *realpath* tool
+
+Depending on the Linux distribution you're using you may already have some (or all) of these tools on your system.
+
+If you're using Windows you can run this shell script within a [Cygwin](http://www.cygwin.com/) terminal.
 
 ##Contents of this repo
 
