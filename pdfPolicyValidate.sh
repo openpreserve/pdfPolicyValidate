@@ -14,7 +14,8 @@
 # - JAR of Apache Preflight (2.0) - get it from:
 #        https://builds.apache.org/job/PDFBox-trunk/lastBuild/org.apache.pdfbox$preflight/
 # - xsltproc (part of libxslt library)
-# -xmllint (part of libxml library)
+# - xmllint (part of libxml library)
+# - realpath tool
 # - If you're using Windows you can run this shell script within a Cygwin terminal: http://www.cygwin.com/
 
 # **************
@@ -22,7 +23,7 @@
 # **************
 
 # Location of  Preflight jar -- update according to your local installation!
-preflightJar=C:/preflight/preflight-app.jar
+preflightJar=C:/preflight/preflight-app-2.0.0-20131208.152749-90.jar
 
 # Do not edit anything below this line (unless you know what you're doing) 
 
