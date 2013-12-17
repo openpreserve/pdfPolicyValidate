@@ -41,7 +41,7 @@ If you're using Windows you can run this shell script within a [Cygwin](http://w
 
 
 ### Output 
-For now both *Preflight* output and the output of the *Schematron* validation are written to the directory from which the script is executed, using a naming scheme based on an incremental numerical counter. This will obviously change with upcoming versions.
+The script produces the following output files:
 
 - **index.txt**: comma-delimited text file with for each analysed PDF the paths to the corresponding Preflight and Schematron output files
 - **success.txt**: comma-delimited text file with for each analysed PDF the outcome of the policy-based validation (pass/fail)
