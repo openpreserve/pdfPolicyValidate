@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Test script only, this skips the actual Preflight analysis step and does remainder of
+# processing on already existing Preflight output
+#
 # Simple demo script that demonstrates minimal workflow for policy-based validation of PDF documents 
 # using Apache Preflight and Schematron.
 #
@@ -114,7 +117,7 @@ do
     outputSchematron=$rawDir/"$counter"_schematron.xml
     
     # Run Preflight
-    java -jar $preflightJar xml $pdfName >$outputPreflight 2>stderr.txt
+    #java -jar $preflightJar xml $pdfName >$outputPreflight 2>stderr.txt
     
     # Validate output using Schematron reference application
     if [ $counter == "1" ]; then
@@ -127,11 +130,7 @@ do
     xsltproc --path $xslPath xxx.xsl $outputPreflight > $outputSchematron
     
     # Extract failed tests from Schematron output
-    
-    # Line below extracts literal test
     #failedTests=$(xmllint --xpath "//*[local-name()='schematron-output']/*[local-name()='failed-assert']/@test" $outputSchematron)
-    
-    # Line below extracts text description of failed tests (each wrapped in <svrl:text> element)
     failedTests=$(xmllint --xpath "//*[local-name()='schematron-output']/*[local-name()='failed-assert']/*[local-name()='text']" $outputSchematron)
     
     # PDF passed policy-based validation if failedTests is empty 
