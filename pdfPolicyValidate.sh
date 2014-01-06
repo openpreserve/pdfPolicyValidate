@@ -23,7 +23,7 @@
 # **************
 
 # Location of  Preflight jar -- update according to your local installation!
-preflightJar=C:/preflight/preflight-app-2.0.0-20131208.152749-90.jar
+preflightJar=C:/preflight/preflight-app-2.0.0-20140105.170147-103.jar
 
 # Do not edit anything below this line (unless you know what you're doing) 
 
@@ -114,7 +114,7 @@ do
     outputSchematron=$rawDir/"$counter"_schematron.xml
     
     # Run Preflight
-    java -jar $preflightJar xml $pdfName >$outputPreflight 2>stderr.txt
+    java -jar $preflightJar xml $pdfName >$outputPreflight 2>tmp.stderr
     
     # Validate output using Schematron reference application
     if [ $counter == "1" ]; then
@@ -158,4 +158,4 @@ done
 rm xxx1.sch
 rm xxx2.sch
 rm xxx.xsl
-rm stderr.txt
+rm tmp.stderr
