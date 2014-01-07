@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Test script only, this skips the actual Preflight analysis step and does remainder of
-# processing on already existing Preflight output
-#
 # Simple demo script that demonstrates minimal workflow for policy-based validation of PDF documents 
 # using Apache Preflight and Schematron.
 #
@@ -26,7 +23,7 @@
 # **************
 
 # Location of  Preflight jar -- update according to your local installation!
-preflightJar=C:/preflight/preflight-app-2.0.0-20131208.152749-90.jar
+preflightJar=C:/preflight/preflight-app-2.0.0-20140105.170147-103.jar
 
 # Do not edit anything below this line (unless you know what you're doing) 
 
@@ -101,6 +98,12 @@ if [ -f $failedTestsFile ] ; then
 fi
 
 # **************
+# Initialise failedTestsFile
+# **************
+echo '<?xml version="1.0" standalone="yes"?>' >> $failedTestsFile
+echo '<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" xmlns:sch="http://www.ascc.net/xml/schematron" xmlns:iso="http://purl.oclc.org/dsdl/schematron" title="" schemaVersion="">' >> $failedTestsFile
+
+# **************
 # MAIN PROCESSING LOOP
 # **************
 
@@ -117,7 +120,7 @@ do
     outputSchematron=$rawDir/"$counter"_schematron.xml
     
     # Run Preflight
-    #java -jar $preflightJar xml $pdfName >$outputPreflight 2>stderr.txt
+    #java -jar $preflightJar xml $pdfName >$outputPreflight 2>tmp.stderr
     
     # Validate output using Schematron reference application
     if [ $counter == "1" ]; then
@@ -130,7 +133,11 @@ do
     xsltproc --path $xslPath xxx.xsl $outputPreflight > $outputSchematron
     
     # Extract failed tests from Schematron output
+    
+    # Line below extracts literal test
     #failedTests=$(xmllint --xpath "//*[local-name()='schematron-output']/*[local-name()='failed-assert']/@test" $outputSchematron)
+    
+    # Line below extracts text description of failed tests (each wrapped in <svrl:text> element)
     failedTests=$(xmllint --xpath "//*[local-name()='schematron-output']/*[local-name()='failed-assert']/*[local-name()='text']" $outputSchematron)
     
     # PDF passed policy-based validation if failedTests is empty 
@@ -140,7 +147,9 @@ do
     else
         success="Fail"
         # Failed tests to output file
-        echo $pdfName,$failedTests >> $failedTestsFile
+        echo '<file name="'$pdfName'">' >> $failedTestsFile
+        echo $failedTests >> $failedTestsFile
+        echo '</file>' >> $failedTestsFile
     fi
     
     # Write index file (links Preflight and Schematron outputs to each PDF)
@@ -152,9 +161,14 @@ do
 done
 
 # **************
+# Closing XML failedTestsFile
+# **************
+echo '</svrl:schematron-output>' >> $failedTestsFile
+
+# **************
 # CLEAN-UP
 # **************
 rm xxx1.sch
 rm xxx2.sch
 rm xxx.xsl
-rm stderr.txt
+rm tmp.stderr
