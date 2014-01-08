@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
-# Analyse user-defined set of PDF documents with Apache Preflight and return results
-# as formatted table in Markdown (PHP Extra) or Atlassian Confluence Wiki format
+# This script computes counts of both errors reported by Apache Preflight, as well as
+# failed Schematron assertions. 
 # Johan van der Knijff, KB/ National Library of the Netherlands
 #
 
@@ -9,7 +9,6 @@ import imp
 import os
 import sys
 import xml.etree.ElementTree as ET
-import subprocess as sub
 import argparse
 import collections
 
@@ -57,9 +56,9 @@ def parseCommandLine():
 def getErrorsExceptions(preflightXML):
     
     # Parse Preflight's output and return all errors and exceptions as a dictionary
-    
-    errorsDictionary = defaultdict(list)
-    exceptionsDictionary=defaultdict(list)
+       
+    errorsDictionary = collections.defaultdict(list)
+    exceptionsDictionary=collections.defaultdict(list)
        
     # Parse preflight XML output and extract error messages
     try:
@@ -99,64 +98,114 @@ def getErrorsExceptions(preflightXML):
     
     return(errorsExceptions)    
 
+def getFailedAssertions(schematronXML):
+    
+    # Parse Schematron output and return list with text descriptions of all failed assertions
+    
+    failedAssertions=[]
+    
+    try:
+        tree=ET.parse(schematronXML)
+        root = tree.getroot()
+        
+        # Loop over all elements in root and collect all text in 'failed-assert/text' elements
+        for element in root:
+            if element.tag == '{http://purl.oclc.org/dsdl/svrl}failed-assert':
+                for subelement in element:
+                    if subelement.tag == '{http://purl.oclc.org/dsdl/svrl}text':
+                        failedAssertText = subelement.text
+                        failedAssertions.append(failedAssertText)
+    
+    except:
+        pass
+    
+    return(failedAssertions)
+
     
 def main():
 
-    # Get input from command line
-    args=parseCommandLine()
-    fileIn=args.fileIn
-
-    # Configuration
-
     # What is the location of this script/executable
     appPath=os.path.abspath(get_main_dir())
+
+    # Get input from command line 
+    args=parseCommandLine()
+    fileIn=args.fileIn
             
     # Check if fileIn exists, and exit if not
     checkFileExists(fileIn)
-   
-    # This list will contain all reported *unique* errors for each file
-    errorsListAllFiles=[]
     
-    noFiles=0
+    # Input file is CSV file with for each line:
+    #  Item 1: full path to PDF file
+    #  Item 2: full path to Apache Preflight output
+    #  Item 3: full path to Schematron output
+    f = open(fileIn, 'r')
+    lines=f.readlines()
+    f.close()
    
-    try:
-        tree=ET.parse(fileIn)
-        root = tree.getroot()
+    # Below lists will contain all reported *unique* Prelight validation errors and failed assertions for each file
+    preflightErrorsAllFiles=[] 
+    failedAssertionsAllFiles=[]
+    
+    # Initialise file counter
+    noFiles=0
+    
+    # Main processing loop; each line represents one analysed PDF
+    
+    for line in lines:
+        line = line.strip()
+        lineItems = line.split(',')
+        pathPdf = lineItems[0]
+        pathPreflightFile = lineItems[1]
+        pathSchematronFile = lineItems[2]
         
-        # Loop over 'file' elements
-        for element in root:
-            #Initialise list that will hold all errors for this file
-            errorsListOneFile=[]
-            noFiles +=1
-            # Loop over 'text' elements
-            for subelement in element:
-                if subelement.tag == '{http://purl.oclc.org/dsdl/svrl}text':
-                    errorMessage = subelement.text
-                    errorsListOneFile.append(errorMessage)
-                
+        # Preflight errors
+        
+        try:
+        
+            # Dictionary with all Preflight error codes, exceptions and error descriptions
+            preflightErrorsExceptions = getErrorsExceptions(pathPreflightFile)
+      
+            # Extract error *codes* (incl. "Exception" keyword) to a list 
+            preflightErrorCodesExceptions = [k for k, v in preflightErrorsExceptions.items()]
+        
             # Remove duplicates
-            errorsListOneFileCleaned = list(set(errorsListOneFile))
-                
-            #print(errorsListOneFileCleaned)
-                
-            # Append errors to errorsListAllFiles
-                
-            for item in errorsListOneFileCleaned:
-                errorsListAllFiles.append(item)
-                        
-        # Count occurrences for each error
-        errorOccurrences=collections.Counter(errorsListAllFiles)
-        occurencesCounts=errorOccurrences.most_common()
+            preflightErrorCodesExceptions = list(set(preflightErrorCodesExceptions))
         
-        # Print output
+            # Append to preflightErrorsAllFiles    
+            for item in preflightErrorCodesExceptions:
+                preflightErrorsAllFiles.append(item)
         
-        # Header
-        print("Error,count")
+        except:
+            pass
         
-        for item in occurencesCounts:
-            print('"' + item[0] + '",'  + str(item[1]))
-         
-    except:
-        print "Unexpected error:", sys.exc_info()[0]
-        pass      
+        # Failed Schematron assertions
+        
+        try:
+           
+            # List with all failed Schematron assertions
+            failedAssertions = getFailedAssertions(pathSchematronFile)
+            
+            # Remove duplicates
+            failedAssertions = list(set(failedAssertions))
+            
+            # Append to failedAssertionsAllFiles
+            for item in failedAssertions:
+                failedAssertionsAllFiles.append(item)
+        except:
+            pass
+    
+    # Count occurrences for each error/exception
+    errorOccurrences=collections.Counter(preflightErrorsAllFiles)
+    errorOccurencesCounts=errorOccurrences.most_common()
+    
+    # Same for failed assertions
+    failedAssertionOccurrences=collections.Counter(failedAssertionsAllFiles)
+    failedAssertionOccurrencesCounts=failedAssertionOccurrences.most_common()
+    
+    for item in errorOccurencesCounts:
+        print(item[0] + ','  + str(item[1]))
+        
+    for item in failedAssertionOccurrencesCounts:
+        print(item[0] + ','  + str(item[1]))
+    
 main()
