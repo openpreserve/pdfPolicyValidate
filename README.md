@@ -60,7 +60,13 @@ The *errorcounts.py* script analyses the output of the above script, and calcula
 ### Usage
      python errorcounts.py fileIn
 
-where *fileIn* is the index file (*index.csv*). Results are written to two comma-separated files:
+where *fileIn* is the index file (*index.csv*). 
+
+### Example
+     python errorcounts.py index.csv
+
+### Output
+The script writes its results to two comma-separated files:
 
 - **preflightErrorCounts.csv**: counts of each error code reported by Preflight (ascending order). Example:
 
