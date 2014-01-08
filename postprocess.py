@@ -151,10 +151,10 @@ def main():
         # Print output
         
         # Header
-        print("Error,count,%")
+        print("Error,count")
         
         for item in occurencesCounts:
-            print('"' + item[0] + '",'  + str(item[1]) + ','  + str(100*item[1]/noFiles))
+            print('"' + item[0] + '",'  + str(item[1]))
          
     except:
         print "Unexpected error:", sys.exc_info()[0]
