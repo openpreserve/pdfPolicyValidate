@@ -32,6 +32,12 @@ Changes relative to pdf_policy_preflight_test.sch: tried to make error descripti
     </s:rule>
   </s:pattern>
 
+  <s:pattern name="Check for unknown errors">    
+    <s:rule context="/preflight/errors/error">
+      <s:assert test="not(code = '-1')">Unknown error</s:assert>
+    </s:rule>
+  </s:pattern>
+  
   <s:pattern name="Check for malformed PDF and general processing errors">    
     <s:rule context="/preflight/errors/error">
       <s:assert test="not(code = '8')">Processing error (possibly malformed PDF)</s:assert>

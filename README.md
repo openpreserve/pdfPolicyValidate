@@ -28,6 +28,8 @@ If you're using Windows you can run this shell script within a [Cygwin](http://w
 
 - **schemas**: example schemas (currently only one)
 
+-- **errorcounts.py**: post-processing script that produces counts of unique (per analysed PDF) error codes and failed Schematron assertions 
+
 ## Command line use
 
 #### Usage
