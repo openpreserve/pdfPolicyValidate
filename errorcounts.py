@@ -145,10 +145,7 @@ def main():
     # Below lists will contain all reported *unique* Prelight validation errors and failed assertions for each file
     preflightErrorsAllFiles=[] 
     failedAssertionsAllFiles=[]
-    
-    # Initialise file counter
-    noFiles=0
-    
+        
     # Main processing loop; each line represents one analysed PDF
     
     for line in lines:
@@ -202,10 +199,15 @@ def main():
     failedAssertionOccurrences=collections.Counter(failedAssertionsAllFiles)
     failedAssertionOccurrencesCounts=failedAssertionOccurrences.most_common()
     
+    # Write results to file    
+    f = open("preflightErrorCounts.csv", 'w')
     for item in errorOccurencesCounts:
-        print(item[0] + ','  + str(item[1]))
-        
+        f.write(item[0] + ','  + str(item[1]) + "\n")
+    f.close()
+    
+    f = open("failedAssertCounts.csv", 'w')
     for item in failedAssertionOccurrencesCounts:
-        print(item[0] + ','  + str(item[1]))
+        f.write('"' + item[0] + '",'  + str(item[1]) + "\n")
+    f.close()
     
 main()

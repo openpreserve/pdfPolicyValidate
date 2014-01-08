@@ -75,13 +75,13 @@ rawDir=$(realpath ./$rawDir)
 # **************
 
 # Links each PDF to corresponding Preflight / Schematron output file
-indexFile="index.txt"
+indexFile="index.csv"
 
 # File with results (pass/fail) of policy-based validation for each PDF 
-successFile="success.txt"
+successFile="success.csv"
 
 # File that summarises failed tests for PDFs that didn't pass policy-based validation
-failedTestsFile="failed.txt" 
+failedTestsFile="failed.csv" 
 
 # Remove these files if they exist already (writing to them will be done in append mode!)
 
