@@ -134,6 +134,15 @@ do
     # Line below extracts text description of failed tests (each wrapped in <svrl:text> element)
     failedTests=$(xmllint --xpath "//*[local-name()='schematron-output']/*[local-name()='failed-assert']/*[local-name()='text']" $outputSchematron)
     
+    # Due to bug in Preflight sometimes non-valid XML is produced, which results in empty Schematron file.
+    # Workaround: check file size of Schematron output and 
+    
+    schematronFileSize=$(wc -c < $outputSchematron)
+    
+    if [ $schematronFileSize == 0 ]; then
+        failedTests="SchematronFailure"
+    fi
+    
     # PDF passed policy-based validation if failedTests is empty 
     if [ ! "$failedTests" ]
     then
