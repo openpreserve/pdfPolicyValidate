@@ -23,7 +23,7 @@
 # **************
 
 # Location of  Preflight jar -- update according to your local installation!
-preflightJar=C:/preflight/preflight-app-2.0.0-20140105.170147-103.jar
+preflightJar=/usr/local/SCAPE/tools/preflight/preflight-app-2.0.0-20140114.220308-114.jar
 
 # Do not edit anything below this line (unless you know what you're doing) 
 

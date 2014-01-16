@@ -28,7 +28,9 @@ If you're using Windows you can run this shell script within a [Cygwin](http://w
 
 - **schemas**: example schemas (currently only one)
 
-- **errorcounts.py**: post-processing script that produces counts of unique (per analysed PDF) error codes and failed Schematron assertions 
+- **errorcounts.py**: post-processing script that produces counts of unique (per analysed PDF) error codes and failed Schematron assertions
+
+- **goGovdocsSelected.sh**: demonstrates combined use of *pdfPolicyValidate.sh* and *errorcounts.py*
 
 ## Command line use
 
