@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 # This script computes counts of both errors reported by Apache Preflight, as well as
 # failed Schematron assertions. 
