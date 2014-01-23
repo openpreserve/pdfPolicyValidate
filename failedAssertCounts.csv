@@ -1,0 +1,24 @@
+"Mandatory fields missing from font descriptor dictionary",4758
+"Error in font descriptor",4424
+"Mandatory fields missing from font dictionary",4105
+"Width array and font program width inconsistent",2566
+"Missing CIDSet entry in subset of composite font",1255
+"Encoding inconsistent with font",1090
+"Preflight exception",984
+"Invalid CIDToGID",920
+"Charset declaration missing in Type 1 subset",856
+"Missing glyph",476
+"Embedded file(s)",139
+"Encryption",123
+"JavaScript",56
+"Damaged embedded TrueType font",56
+"Damaged embedded Type1 font",16
+"Mandatory element missing (possibly malformed PDF)",16
+"Required entry missing in composite font dictionary",9
+"Damaged embedded composite font",4
+"Movie annotation",1
+"Movie action",1
+"Screen annotation",1
+"Unknown error",1
+"Damaged embedded type 3 font",1
+"Undefined action (e.g. Rendition)",1

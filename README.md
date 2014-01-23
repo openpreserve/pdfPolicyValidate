@@ -98,4 +98,8 @@ The script writes its results to two comma-separated files:
 </pre>
 
 Note that for both files the counts are based on *unique* error codes / failed assertions per *PDF*. This means that if, for example, a *PDF* results in 8 occurrences of error *3.1.2*, it only increases the error count in *preflightErrorCounts.csv* by 1.
+
+##Funding
+This work was partially supported by the [SCAPE](http://www.scape-project.eu/) Project. The SCAPE project is co-funded by the European Union under FP7 ICT-2009.4.1 (Grant Agreement number 270137).
+
  
